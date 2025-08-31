@@ -42,6 +42,14 @@ function handleKeyUp(event) {
             activeElement.textContent = newText;
             moveCursorToEnd(activeElement);
         }
+        // Track autocorrect for undo
+        lastAutocorrect = {
+            element: activeElement,
+            originalWord: wordToCheck,
+            correctedWord: correctedWord,
+            position: words.length - 1,
+            timestamp: Date.now()
+        };
     }
 }
 
@@ -82,6 +90,47 @@ function moveCursorToEnd(element) {
     selection.addRange(range);
 }
 
+// --- Undo Autocorrect Feature ---
+let lastAutocorrect = {
+    element: null,
+    originalWord: null,
+    correctedWord: null,
+    position: null,
+    timestamp: null
+};
+
+document.body.addEventListener('keydown', function(event) {
+    if (event.key === 'Backspace' && lastAutocorrect.element) {
+        const activeElement = document.activeElement;
+        if (activeElement === lastAutocorrect.element) {
+            // Get current text
+            const text = activeElement.value || activeElement.textContent;
+            const words = text.trim().split(/\s+/);
+            // Check if last word matches correctedWord
+            if (words.length > 0 && words[words.length - 1] === lastAutocorrect.correctedWord) {
+                // Undo autocorrect
+                words[words.length - 1] = lastAutocorrect.originalWord;
+                const newText = words.join(' ') + ' ';
+                if (activeElement.value !== undefined) {
+                    activeElement.value = newText;
+                } else {
+                    activeElement.textContent = newText;
+                    moveCursorToEnd(activeElement);
+                }
+                // Clear lastAutocorrect so it only works once
+                lastAutocorrect = {
+                    element: null,
+                    originalWord: null,
+                    correctedWord: null,
+                    position: null,
+                    timestamp: null
+                };
+                // Prevent default backspace
+                event.preventDefault();
+            }
+        }
+    }
+});
 
 // --- Start the Extension ---
 // Run the setup function to activate the event listener.
