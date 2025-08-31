@@ -168,6 +168,17 @@ def build_ai_dictionary():
                 outfile.write(f'"{misspelled_escaped}":"{corrected_escaped}"')
                 first = False
             outfile.write("};")
+        # Also write validWords.js
+        with open('validWords.js', 'w', encoding='utf-8') as vfile:
+            vfile.write("const validWords=new Set([")
+            first = True
+            for word in top_words.keys():
+                word_escaped = word.replace('"', '\"')
+                if not first:
+                    vfile.write(",")
+                vfile.write(f'"{word_escaped}"')
+                first = False
+            vfile.write("]);")
     except Exception as e:
         print(f"   Error writing file: {e}")
         return

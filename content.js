@@ -10,7 +10,6 @@ function setupAutocorrectListener() {
 
 // --- Event Handler ---
 // This function is called every time a key is released.
-function handleKeyUp(event) {
     // 1. Check if the key pressed was the spacebar.
     // The spacebar signals the end of a word, which is our cue to check it.
     if (event.key !== ' ') {
@@ -58,6 +57,42 @@ function handleKeyUp(event) {
         } else {
             activeElement.textContent = newText;
             // For contentEditable divs, we need to move the cursor to the end.
+            moveCursorToEnd(activeElement);
+        }
+    }
+}
+
+// --- Load validWords.js ---
+// Make sure validWords.js is loaded before content.js in manifest.json
+
+// --- Updated autocorrect logic ---
+// Skip autocorrect if the word is valid
+function handleKeyUp(event) {
+    if (event.key !== ' ') {
+        return;
+    }
+    const activeElement = event.target;
+    if (activeElement.tagName.toLowerCase() !== 'textarea' && activeElement.type !== 'text' && activeElement.type !== 'search' && !activeElement.isContentEditable) {
+        return;
+    }
+    const text = activeElement.value || activeElement.textContent;
+    const words = text.trim().split(/\s+/);
+    if (words.length < 1) {
+        return;
+    }
+    const wordToCheck = words[words.length - 1];
+    // Skip autocorrect if word is valid
+    if (typeof validWords !== 'undefined' && validWords.has(wordToCheck.toLowerCase())) {
+        return;
+    }
+    if (correctionMap[wordToCheck.toLowerCase()]) {
+        const correctedWord = matchCase(wordToCheck, correctionMap[wordToCheck.toLowerCase()]);
+        words[words.length - 1] = correctedWord;
+        const newText = words.join(' ') + ' ';
+        if (activeElement.value !== undefined) {
+            activeElement.value = newText;
+        } else {
+            activeElement.textContent = newText;
             moveCursorToEnd(activeElement);
         }
     }
