@@ -1,12 +1,3 @@
-<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- Dark background matching the demo theme -->
-    <rect width="128" height="128" rx="28" fill="#1F2937"/>
-    
-    <!-- Stylized letter 'a' for 'autocorrect', using the color scheme from our demo -->
-    <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="90" font-weight="600" fill="#A78BFA">
-        a
-    </text>
-    
-    <!-- A subtle sparkle to signify the 'invisible' and 'automatic' action -->
-    <path d="M96 32.5L100.5 22L105 32.5L116 37L105 41.5L100.5 52L96 41.5L85 37L96 32.5Z" fill="#FBBF24"/>
-</svg>
+version https://git-lfs.github.com/spec/v1
+oid sha256:5d680fc7be72c40831d7616188d4b2df66d27017d8fc39ddb0d2fcc827a2bdbc
+size 701

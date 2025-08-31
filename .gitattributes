@@ -1,0 +1,7 @@
+assets/icons/icon128.png filter=lfs diff=lfs merge=lfs -text
+assets/icons/icon128.svg filter=lfs diff=lfs merge=lfs -text
+assets/frequency_dictionary_en_82_765.txt filter=lfs diff=lfs merge=lfs -text
+assets/icons/icon16.png filter=lfs diff=lfs merge=lfs -text
+assets/icons/icon16.svg filter=lfs diff=lfs merge=lfs -text
+assets/icons/icon48.png filter=lfs diff=lfs merge=lfs -text
+assets/icons/icon48.svg filter=lfs diff=lfs merge=lfs -text
