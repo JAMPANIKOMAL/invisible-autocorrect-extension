@@ -5,13 +5,15 @@
 import re
 
 # --- Configuration ---
-# The master dictionary file with word frequencies.
-MASTER_DICTIONARY_FILE = 'assets/frequency_dictionary_en_82_765.txt' 
-# The output file for our new, AI-generated dictionary.
-OUTPUT_FILE = 'assets/dictionary.js'
-# The maximum edit distance for generating typos. 
-# 1 is fast and effective. 2 is much more comprehensive but significantly slower.
-MAX_EDIT_DISTANCE = 1 
+
+# --- Configuration ---
+MASTER_DICTIONARY_FILE = 'assets/frequency_dictionary_en_82_765.txt'
+OUTPUT_FILE = 'dictionary.js'
+MAX_EDIT_DISTANCE = 1
+# Only include corrections for the top N most frequent words
+TOP_N_WORDS = 10000
+# Limit the number of typos per word (most likely typos)
+MAX_TYPOS_PER_WORD = 20
 
 def generate_edits(word):
     """
@@ -40,11 +42,9 @@ def build_ai_dictionary():
     try:
         with open(MASTER_DICTIONARY_FILE, 'r', encoding='utf-8') as f:
             for line in f:
-                # The format is 'word count'
                 parts = line.strip().split()
                 if len(parts) == 2:
                     word = parts[0].lower()
-                    # Only include alphabetic words to keep it clean
                     if word.isalpha():
                         master_word_freq[word] = int(parts[1])
     except FileNotFoundError:
@@ -52,36 +52,33 @@ def build_ai_dictionary():
         print(f"Master dictionary file not found: '{MASTER_DICTIONARY_FILE}'")
         print("Please make sure it's in the same folder as this script.")
         return
-        
     print(f"   Loaded {len(master_word_freq)} unique words.")
+
+    # Sort and keep only the top N most frequent words
+    sorted_words = sorted(master_word_freq.items(), key=lambda x: x[1], reverse=True)
+    top_words = dict(sorted_words[:TOP_N_WORDS])
+    print(f"   Using top {TOP_N_WORDS} words for corrections.")
 
     # --- Step 2: Generate Edits and Build Correction Map ---
     print(f"\n2. Generating misspellings (Edit Distance: {MAX_EDIT_DISTANCE})...")
     print("   This may take a few minutes...")
     
-    total_words = len(master_word_freq)
-    for i, (correct_word, frequency) in enumerate(master_word_freq.items()):
-        # Print progress indicator
-        if i % 5000 == 0:
+    total_words = len(top_words)
+    for i, (correct_word, frequency) in enumerate(top_words.items()):
+        if i % 1000 == 0:
             print(f"   Processed {i} / {total_words} words...")
 
-        # Generate all possible typos for the current correct word
-        typos = generate_edits(correct_word)
-        if MAX_EDIT_DISTANCE > 1:
-            typos.update(e2 for e1 in typos for e2 in generate_edits(e1))
+        typos = list(generate_edits(correct_word))
+        # Limit the number of typos per word
+        typos = typos[:MAX_TYPOS_PER_WORD]
 
         for typo in typos:
-            # If the typo isn't a real word itself...
-            if typo not in master_word_freq:
-                # If this typo hasn't been seen before, assign the current word to it.
+            if typo not in top_words:
                 if typo not in correction_map:
                     correction_map[typo] = correct_word
                 else:
-                    # If this typo is already in our map, it's a conflict.
-                    # We need to decide which correction is better.
-                    # We do this by checking which correct word is more common (higher frequency).
                     existing_correction = correction_map[typo]
-                    if master_word_freq.get(correct_word, 0) > master_word_freq.get(existing_correction, 0):
+                    if top_words.get(correct_word, 0) > top_words.get(existing_correction, 0):
                         correction_map[typo] = correct_word
     
     print(f"   Generated {len(correction_map)} unique corrections.")
