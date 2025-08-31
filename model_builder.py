@@ -1,3 +1,7 @@
+# Whitelist of common short words that should never be autocorrected
+SHORT_WORD_WHITELIST = set([
+    "is", "by", "to", "in", "on", "at", "an", "it", "as", "be", "he", "we", "me", "my", "do", "go", "so", "no", "up", "us", "if", "or", "of", "am"
+])
 # --- For advanced users: Generate a complete dictionary ---
 # Uncomment and run the following code block to build a full dictionary covering all words and typos.
 # WARNING: The resulting file may be 1 GB+ and is not recommended for regular use!
@@ -118,9 +122,9 @@ def build_ai_dictionary():
 
     # Sort and keep only the top N most frequent words, skipping short words
     sorted_words = sorted(master_word_freq.items(), key=lambda x: x[1], reverse=True)
-    filtered_words = [(w, f) for w, f in sorted_words if len(w) > 2]
+    filtered_words = [(w, f) for w, f in sorted_words if len(w) > 2 or w in SHORT_WORD_WHITELIST]
     top_words = dict(filtered_words[:TOP_N_WORDS])
-    print(f"   Using top {TOP_N_WORDS} words (length > 2) for corrections.")
+    print(f"   Using top {TOP_N_WORDS} words (length > 2 or whitelisted) for corrections.")
 
     # --- Step 2: Generate Edits and Build Correction Map ---
     print(f"\n2. Generating misspellings (Edit Distance: {MAX_EDIT_DISTANCE})...")
@@ -136,6 +140,9 @@ def build_ai_dictionary():
         typos = typos[:MAX_TYPOS_PER_WORD]
 
         for typo in typos:
+            # Exclude autocorrect for whitelisted short words
+            if typo in SHORT_WORD_WHITELIST:
+                continue
             if typo not in top_words:
                 if typo not in correction_map:
                     correction_map[typo] = correct_word
