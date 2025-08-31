@@ -6,9 +6,9 @@ import re
 
 # --- Configuration ---
 # The master dictionary file with word frequencies.
-MASTER_DICTIONARY_FILE = 'frequency_dictionary_en_82_765.txt' 
+MASTER_DICTIONARY_FILE = 'assets/frequency_dictionary_en_82_765.txt' 
 # The output file for our new, AI-generated dictionary.
-OUTPUT_FILE = 'dictionary_v2.js'
+OUTPUT_FILE = 'assets/dictionary.js'
 # The maximum edit distance for generating typos. 
 # 1 is fast and effective. 2 is much more comprehensive but significantly slower.
 MAX_EDIT_DISTANCE = 1 
