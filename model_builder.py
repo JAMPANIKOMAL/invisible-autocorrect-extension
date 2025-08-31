@@ -11,7 +11,7 @@ MASTER_DICTIONARY_FILE = 'assets/frequency_dictionary_en_82_765.txt'
 OUTPUT_FILE = 'dictionary.js'
 MAX_EDIT_DISTANCE = 1
 # Only include corrections for the top N most frequent words
-TOP_N_WORDS = 10000
+TOP_N_WORDS = 30000  # Adjust this value to approach 12 MB output size
 # Limit the number of typos per word (most likely typos)
 MAX_TYPOS_PER_WORD = 20
 
@@ -63,10 +63,11 @@ def build_ai_dictionary():
         return
     print(f"   Loaded {len(master_word_freq)} unique words.")
 
-    # Sort and keep only the top N most frequent words
+    # Sort and keep only the top N most frequent words, skipping short words
     sorted_words = sorted(master_word_freq.items(), key=lambda x: x[1], reverse=True)
-    top_words = dict(sorted_words[:TOP_N_WORDS])
-    print(f"   Using top {TOP_N_WORDS} words for corrections.")
+    filtered_words = [(w, f) for w, f in sorted_words if len(w) > 2]
+    top_words = dict(filtered_words[:TOP_N_WORDS])
+    print(f"   Using top {TOP_N_WORDS} words (length > 2) for corrections.")
 
     # --- Step 2: Generate Edits and Build Correction Map ---
     print(f"\n2. Generating misspellings (Edit Distance: {MAX_EDIT_DISTANCE})...")
