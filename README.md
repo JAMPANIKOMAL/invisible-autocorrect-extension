@@ -36,3 +36,8 @@ The extension is now installed and active! Test it by typing a common misspellin
 - Developed with assistance from Google's Gemini.
 - The AI model leverages word frequency data from the [SymSpell project](https://github.com/wolfgarbe/SymSpell).
 
+# Note on Dictionary Coverage
+
+The current autocorrect dictionary (`dictionary.js`) is a minimal, optimized 12 MB file. It covers the most common English words and typos for fast performance, but may not autocorrect every possible misspelling.
+
+If you want a more comprehensive autocorrect experience, you can generate a full dictionary by running the commented code block at the end of `model_builder.py`. This will create a much larger dictionary covering nearly all possible corrections, but may impact extension performance and load time.

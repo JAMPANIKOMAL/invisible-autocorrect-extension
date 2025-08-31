@@ -1,3 +1,56 @@
+# --- For advanced users: Generate a complete dictionary ---
+# Uncomment and run the following code block to build a full dictionary covering all words and typos.
+# WARNING: The resulting file may be 1 GB+ and is not recommended for regular use!
+#
+# def build_full_dictionary():
+#     print("--- Starting Full Dictionary Build ---")
+#     master_word_freq = {}
+#     correction_map = {}
+#     try:
+#         with open(MASTER_DICTIONARY_FILE, 'r', encoding='utf-8') as f:
+#             for line in f:
+#                 parts = line.strip().split()
+#                 if len(parts) == 2:
+#                     word = parts[0].lower()
+#                     if word.isalpha():
+#                         master_word_freq[word] = int(parts[1])
+#     except FileNotFoundError:
+#         print(f"\n--- ERROR ---")
+#         print(f"Master dictionary file not found: '{MASTER_DICTIONARY_FILE}'")
+#         print("Please make sure it's in the same folder as this script.")
+#         return
+#     print(f"   Loaded {len(master_word_freq)} unique words.")
+#     total_words = len(master_word_freq)
+#     for i, (correct_word, frequency) in enumerate(master_word_freq.items()):
+#         if i % 5000 == 0:
+#             print(f"   Processed {i} / {total_words} words...")
+#         typos = generate_edits(correct_word)
+#         for typo in typos:
+#             if typo not in master_word_freq:
+#                 if typo not in correction_map:
+#                     correction_map[typo] = correct_word
+#                 else:
+#                     existing_correction = correction_map[typo]
+#                     if master_word_freq.get(correct_word, 0) > master_word_freq.get(existing_correction, 0):
+#                         correction_map[typo] = correct_word
+#     print(f"   Generated {len(correction_map)} unique corrections.")
+#     try:
+#         with open('dictionary_full.js', 'w', encoding='utf-8') as outfile:
+#             outfile.write("const correctionMap={")
+#             first = True
+#             for misspelled, corrected in correction_map.items():
+#                 misspelled_escaped = misspelled.replace('"', '\"')
+#                 corrected_escaped = corrected.replace('"', '\"')
+#                 if not first:
+#                     outfile.write(",")
+#                 outfile.write(f'"{misspelled_escaped}":"{corrected_escaped}"')
+#                 first = False
+#             outfile.write("};")
+#     except Exception as e:
+#         print(f"   Error writing file: {e}")
+#         return
+#     print("\n--- Success! ---")
+#     print("Full dictionary has been saved to 'dictionary_full.js'.")
 # model_builder.py
 # This script builds an advanced correction dictionary using a frequency list
 # and an edit distance algorithm to generate potential misspellings.
