@@ -31,6 +31,15 @@ Follow these steps to set up the extension locally.
 
 The extension is now installed and active! Test it by typing a common misspelling (e.g., `teh` or `wierd`) in any text box and pressing the spacebar.
 
+## Manual Overrides
+
+The autocorrect engine also supports a large set of manual corrections via `override.js`. This file contains thousands of curated typo-to-correction mappings, ensuring that even rare or tricky misspellings are fixed instantly. The Python builder script (`model_builder.py`) automatically loads and applies these overrides when generating the dictionary.
+
+## Output Files
+
+- `dictionary.js`: The main autocorrect correction map, including both AI-generated and manual overrides.
+- `validWords.js`: A JavaScript Set containing all valid words used for autocorrect whitelisting and validation.
+
 ## Acknowledgements
 
 - Developed with assistance from Google's Gemini.

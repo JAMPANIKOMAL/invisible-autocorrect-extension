@@ -17,3 +17,8 @@ This document outlines the development journey and versions of the Invisible Aut
     - Builds a reverse-lookup map: each typo maps to its correct word.
     - Resolves conflicts by selecting the word with higher frequency.
 - **Result:** Produces `dictionary.js` with a correction map containing hundreds of thousands of entries, enabling robust real-world autocorrection.
+
+## Version 2.1: Manual Overrides and Valid Words
+
+- **Manual Overrides:** Added support for a large curated set of typo corrections via `override.js`. These are loaded and merged into the correction map during dictionary generation.
+- **Valid Words Output:** The builder now generates `validWords.js`, a JavaScript Set of all valid words for use in the extension.
