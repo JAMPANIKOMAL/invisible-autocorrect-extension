@@ -6,3 +6,4 @@ assets/icons/icon16.svg filter=lfs diff=lfs merge=lfs -text
 assets/icons/icon48.png filter=lfs diff=lfs merge=lfs -text
 assets/icons/icon48.svg filter=lfs diff=lfs merge=lfs -text
 dictionary.js filter=lfs diff=lfs merge=lfs -text
+validWords.js filter=lfs diff=lfs merge=lfs -text
