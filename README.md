@@ -47,7 +47,7 @@ The autocorrect engine also supports a large set of manual corrections via `over
 - `validWords.js`: A JavaScript Set containing all valid words used for autocorrect whitelisting and validation.
 
 ## License
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgements
 
