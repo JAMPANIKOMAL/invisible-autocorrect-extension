@@ -31,6 +31,12 @@ Follow these steps to set up the extension locally.
 
 The extension is now installed and active! Test it by typing a common misspelling (e.g., `teh` or `wierd`) in any text box and pressing the spacebar.
 
+## Features
+- Seamless, phone-like autocorrect in your browser
+- AI-powered typo correction using a frequency dictionary
+- Manual overrides for rare misspellings via `override.js`
+- **Undo autocorrect:** If a word is autocorrected, pressing backspace immediately restores the original word—just like on a phone
+
 ## Manual Overrides
 
 The autocorrect engine also supports a large set of manual corrections via `override.js`. This file contains thousands of curated typo-to-correction mappings, ensuring that even rare or tricky misspellings are fixed instantly. The Python builder script (`model_builder.py`) automatically loads and applies these overrides when generating the dictionary.
@@ -39,6 +45,9 @@ The autocorrect engine also supports a large set of manual corrections via `over
 
 - `dictionary.js`: The main autocorrect correction map, including both AI-generated and manual overrides.
 - `validWords.js`: A JavaScript Set containing all valid words used for autocorrect whitelisting and validation.
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
 
 ## Acknowledgements
 
